@@ -11,6 +11,11 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
 
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [chromium, firefox]
+
     steps:
       - uses: actions/checkout@v4
 
@@ -25,14 +30,14 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      - name: Run Playwright tests
-        run: npx playwright test
+      - name: Run tests on ${{ matrix.project }}
+        run: npx playwright test --project=${{ matrix.project }}
 
-      - name: Upload Playwright report
+      - name: Upload Playwright report - ${{ matrix.project }}
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-report
+          name: playwright-report-${{ matrix.project }}
           path: playwright-report/
           retention-days: 30
 
