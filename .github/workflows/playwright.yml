@@ -41,10 +41,10 @@ jobs:
           path: playwright-report/
           retention-days: 30
 
-      - name: Upload test results
+      - name: Upload test results - ${{ matrix.project }}
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: test-results
+          name: test-results-${{ matrix.project }}
           path: test-results/
           retention-days: 30
